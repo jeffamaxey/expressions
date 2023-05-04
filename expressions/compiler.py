@@ -33,11 +33,11 @@ class Function(Node):
 
     def __str__(self):
         # type: () -> str
-        return "{}({})".format(self.name, ", ".join(str(a) for a in self.args))
+        return f'{self.name}({", ".join(str(a) for a in self.args)})'
 
     def __repr__(self):
         # type: () -> str
-        return "{}({})".format(self.name, ", ".join(repr(a) for a in self.args))
+        return f'{self.name}({", ".join(repr(a) for a in self.args)})'
 
 
 class Variable(Node):
@@ -61,11 +61,11 @@ class Variable(Node):
 
     def __eq__(self, other):
         # type: (Any) -> bool
-        if not isinstance(other, Variable):
-            return NotImplemented
-        else:
-            return self.name == other.name \
-                    and self.reference == other.reference
+        return (
+            self.name == other.name and self.reference == other.reference
+            if isinstance(other, Variable)
+            else NotImplemented
+        )
 
     def __hash__(self):
         # type: () -> int
@@ -115,7 +115,7 @@ class _Result(object):
         return str(self.value)
     def __repr__(self):
         # type: () -> str
-        return "_Result({})".format(repr(self.value))
+        return f"_Result({repr(self.value)})"
 
 
 class _ExpressionSemantics(object):
@@ -156,7 +156,7 @@ class _ExpressionSemantics(object):
             result = self.compiler.compile_binary(self.context, operator,
                                                   left.value, right.value)
         else:
-            raise Exception("Unknown node type '{}'".format(node_type))
+            raise Exception(f"Unknown node type '{node_type}'")
 
         if isinstance(result, _Result):
             raise Exception("Internal compiler error - "
@@ -209,7 +209,7 @@ class _ExpressionSemantics(object):
     def NAME(self, ast):
         # type: (Any) -> _Result
         if ast.lower() in self.keywords:
-            raise FailedSemantics("'{}' is a keyword.".format(ast))
+            raise FailedSemantics(f"'{ast}' is a keyword.")
         return ast
 
 

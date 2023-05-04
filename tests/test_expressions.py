@@ -19,7 +19,7 @@ class FunctionCompiler(Compiler):
     def compile_variable(self, context, variable):
         return variable
     def compile_function(self, context, function, args):
-        return "CALL %s(%s)" % (function, ", ".join(args))
+        return f'CALL {function}({", ".join(args)})'
 
 class CompilerTestCase(unittest.TestCase):
     def test_basic(self):
@@ -119,8 +119,8 @@ class CustomCompilersTestCase(unittest.TestCase):
         functions = set(pp.functions)
         variables = set(pp.variables)
 
-        self.assertEqual(functions, set(["foo", "bar"]))
-        self.assertEqual(variables, set(["a", "b", "c"]))
+        self.assertEqual(functions, {"foo", "bar"})
+        self.assertEqual(variables, {"a", "b", "c"})
 
     def test_preprocessor_unique(self):
         pp = ExpressionInspector()

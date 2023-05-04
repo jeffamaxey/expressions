@@ -41,7 +41,7 @@ class SQLAlchemyExpressionCompiler(Compiler):
         elif operator == "/":
             return op1 / op2
         else:
-            raise SyntaxError("Unknown operator '%s'" % operator)
+            raise SyntaxError(f"Unknown operator '{operator}'")
 
 # Some data:
 data = [
@@ -76,12 +76,12 @@ compiler = SQLAlchemyExpressionCompiler()
 # Compile the expression within a context of the created table
 #
 selection = compiler.compile("(amount / transactions) * 2", table)
-print("compiled selection type: %s" % type(selection))
-print("compiled selection content: %s" % selection)
+print(f"compiled selection type: {type(selection)}")
+print(f"compiled selection content: {selection}")
 
 statement = sql.expression.select([selection], table)
-print("SQL statement: %s" % statement)
+print(f"SQL statement: {statement}")
 
 result = statement.execute()
-print("result: %s" % list(result))
+print(f"result: {list(result)}")
 
